@@ -1,6 +1,6 @@
--- ------------ Rezie ---------------
+-- ------------ Režie ---------------
 
-type Vektor=[Float] -- lepsi double
+type Vektor=[Float] -- lepší by byl double
 type Matice=[Vektor] 
 
 -- Vytvori z jakehokoli vektoru string
@@ -19,25 +19,25 @@ tisk = putStr
 tiskMatice :: Matice -> IO ()
 tiskMatice = tisk . maticeNaString
 
--- --------------- operace s radky -----------------
+-- --------------- operace s řádky -----------------
 
--- overi jestli je radek nulovy
+-- ověří jestli je řádek nulový
 jeNulovy :: Vektor -> Bool
 jeNulovy (x:[]) = if (x==0) then True else False
 jeNulovy (x:xs) = if (jeNulovy [x]) then (jeNulovy xs) else False
 
--- nasobeni vektoru konstatntou
+-- násobení vektoru konstatntou
 nasobVektor :: Vektor -> Float -> Vektor
 nasobVektor v k = map (*k) v
 
--- nasobeni 2 vektoru
+-- násobení 2 vektoru
 nasobVektory :: Vektor -> Vektor -> Vektor
 nasobVektory [] [] = []
 nasobVektory [] [_] = []
 nasobVektory [_] [] = []
 nasobVektory (u:us) (v:vs) = (u*v):(nasobVektory us vs)
 
--- scitani 2 vektoru
+-- sčítání 2 vektorů
 sectiVektory :: Vektor -> Vektor -> Vektor
 sectiVektory (u:[]) (v:_) = [u+v]
 sectiVektory (u:_) (v:[]) = [u+v]
@@ -55,17 +55,17 @@ pocetStartovnichNul (v:vs) = 0 + (if (pocetStartovnichNul [v])==1 then 1+(pocetS
 
 -- --------------- operace s maticemi --------------
 
--- vypusti nulove radky
+-- vypustí nulové řádky
 odstranNuly :: Matice -> Matice
 odstranNuly (m:[]) = if (pocetStartovnichNul m) == (length m) then [] else m:[]
 odstranNuly (m:ms) = if (odstranNuly [m]) == [] then (odstranNuly ms) else (odstranNuly (m:ms))
 
--- Vrati hodnost matice - pocet nenulovych radku; todo
+-- Vrátí hodnost matice - počet nenulových řádku
 hodnost :: Matice -> Int
 hodnost (x:[]) = if (jeNulovy x) then 0 else 1
 hodnost (x:xs) = (hodnost [x]) + (hodnost xs)
 
--- Upravi matici na schodovy tvar; todo
+-- Upraví matici na schodový tvar
 schodovyTvar :: Matice -> Matice
 schodovyTvar (m:ms) = if (jeSchodovyTvar (m:ms)) then (m:ms) else schodovyTvar (schod(m:ms))
 
@@ -73,7 +73,7 @@ schodovyTvar (m:ms) = if (jeSchodovyTvar (m:ms)) then (m:ms) else schodovyTvar (
 pripravMatici :: Matice -> Matice
 pripravMatici m = map (pripravVektor) m
 
--- overi jestli je matice ve schodovem tvaru
+-- ověří jestli je matice ve schodovém tvaru
 jeSchodovyTvar :: Matice -> Bool
 jeSchodovyTvar (m:[]) = True
 jeSchodovyTvar (m:n:[]) = (pocetStartovnichNul m) < (pocetStartovnichNul n)
@@ -90,11 +90,11 @@ schod (m:n:ms) = (head nova):(schod (zbytek nova)) where
           nova :: Matice
           nova = prenasobPrvnim (pripravMatici (m:n:ms))
 
--- prvnim radkem prenasob ostatni
+-- prvním řádkem přenásob ostatní
 prenasobPrvnim :: Matice -> Matice
 prenasobPrvnim (m:ms) = m:(prictiKMatici (nasobVektor m (-1)) ms)
 
--- pricte ke kazdemu radku matice vektor
+-- přičte ke každému řádku matice vektor
 prictiKMatici :: Vektor -> Matice -> Matice
 prictiKMatici v m = map (sectiVektory v) m 
 
@@ -125,7 +125,3 @@ matice4 :: Matice
 matice4 = [[1,2,3],
            [2,4,6],
            [3,1,2]] 
-          
-          
--- postup: 1) upravit 1. prvek 1. radku na 1 2) upravovat ostatni radky na 0
-
