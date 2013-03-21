@@ -26,7 +26,6 @@ tiskMatice = tisk . maticeNaString
 -- Zaokrouhlení 
 --zaokrouhli :: Float -> Int -> Float 
 --zaokrouhli f n = if n==0 then (floor f) else (zaokrouhli (f*10) (n-1))/10
-
 zaokrouhli s n = fromIntegral (round (n * faktor)) / faktor 
    where posun = s - (floor (logBase 10 n)  + 1) 
          faktor = 10 ** fromIntegral posun 
@@ -134,7 +133,7 @@ matice2 = [[3,2,1,11],
            [7,5,3,13],
            [9,5,1,14]]
           
--- neprehazuji se radky
+-- nepřehazují se řádky
 matice3 :: Matice
 matice3 = [[1,2,3],
            [2,3,1],
