@@ -145,7 +145,6 @@ matice4 = [[1,2,3],
            [2,4,6],
            [3,1,2]] 
     
--- Funkce main    
-            
+-- Funkce main        
 main = do (tiskMatice (schodovyTvar matice3))
           tisk (intNaString (hodnost (schodovyTvar matice3)))
