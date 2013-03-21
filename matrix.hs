@@ -3,6 +3,10 @@
 type Vektor=[Float] -- lepší by byl double
 type Matice=[Vektor] 
 
+-- Převede Int na String
+intNaString :: Int -> String
+intNaString a = show a
+
 -- Vytvori z jakehokoli vektoru string
 vektorNaString :: Vektor -> String
 vektorNaString x = concat (map (++" ") (map (show) x))
@@ -19,6 +23,14 @@ tisk = putStr
 tiskMatice :: Matice -> IO ()
 tiskMatice = tisk . maticeNaString
 
+-- Zaokrouhlení 
+--zaokrouhli :: Float -> Int -> Float 
+--zaokrouhli f n = if n==0 then (floor f) else (zaokrouhli (f*10) (n-1))/10
+
+zaokrouhli s n = fromIntegral (round (n * faktor)) / faktor 
+   where posun = s - (floor (logBase 10 n)  + 1) 
+         faktor = 10 ** fromIntegral posun 
+
 -- --------------- operace s řádky -----------------
 
 -- ověří jestli je řádek nulový
@@ -29,6 +41,10 @@ jeNulovy (x:xs) = if (jeNulovy [x]) then (jeNulovy xs) else False
 -- násobení vektoru konstatntou
 nasobVektor :: Vektor -> Float -> Vektor
 nasobVektor v k = map (*k) v
+
+-- zaokrouhlí každý prvek vektoru
+zaokrouhliVektor :: Int -> Vektor -> Vektor
+zaokrouhliVektor s v = map (zaokrouhli s) v
 
 -- násobení 2 vektoru
 nasobVektory :: Vektor -> Vektor -> Vektor
@@ -72,6 +88,10 @@ schodovyTvar (m:ms) = if (jeSchodovyTvar (m:ms)) then (m:ms) else schodovyTvar (
 -- Připraví daný řádek tak aby první nenulová hodnota byla 1
 pripravMatici :: Matice -> Matice
 pripravMatici m = map (pripravVektor) m
+
+-- Zaokrouhlí každý prvek matice
+zaokrouhliMatici :: Int -> Matice -> Matice
+zaokrouhliMatici s m = map (zaokrouhliVektor s) m 
 
 -- ověří jestli je matice ve schodovém tvaru
 jeSchodovyTvar :: Matice -> Bool
@@ -120,8 +140,13 @@ matice3 = [[1,2,3],
            [2,3,1],
            [3,1,2]] 
            
--- hodnost=2
+-- hodnost=2 (chyba v přesnosti)
 matice4 :: Matice
 matice4 = [[1,2,3],
            [2,4,6],
            [3,1,2]] 
+    
+-- Funkce main    
+            
+main = do (tiskMatice (schodovyTvar matice3))
+          tisk (intNaString (hodnost (schodovyTvar matice3)))
